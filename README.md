@@ -4,10 +4,18 @@ Microsoft Windows as of Windows 11 22H2 doesn't have any support for foldable PC
 * Access the current posture of the device.
 * Establish the current screen topology, for example the fold size and fold position.
 
-PC manufacturers have identified some of the shortcomings of Windows and most of them have created some type of support to improve the foldable experience on Windows. For example [Asus](https://www.asus.com/) have a software preinstalled [ScreenXpert](https://apps.microsoft.com/store/detail/screenxpert/9N5RFFGFHHP6?hl=en-us&gl=us&rtc=1) which is intended to help by, for example, adding Window Manager capabilities to make the form factor better. [Lenovo](https://lenovo.com/) has a similar software called [Mode Switcher](https://support.lenovo.com/us/en/downloads/ds546903-lenovo-mode-switcher-for-windows-10-64-bit-thinkpad-x1-fold-gen-1-types-20rk-20lk). These software come preinstalled with the laptop to provide a good out of the box user experience.
+PC manufacturers have identified some of the shortcomings of Windows and most of them have created some type of support to improve the foldable experience on Windows. For example [Asus](https://www.asus.com/) have a software preinstalled, [ScreenXpert](https://apps.microsoft.com/store/detail/screenxpert/9N5RFFGFHHP6?hl=en-us&gl=us&rtc=1) which is intended to help by, for example, adding Window Manager capabilities to leverage the form factor. [Lenovo](https://lenovo.com/) has a similar software called [Mode Switcher](https://support.lenovo.com/us/en/downloads/ds546903-lenovo-mode-switcher-for-windows-10-64-bit-thinkpad-x1-fold-gen-1-types-20rk-20lk). These software come preinstalled with the laptop to provide a good out of the box user experience.
+
+The lack of OS APIs makes it hard to support the form factor on the web or in 3rd party applications.
+
+We will not go into details here on how websites or applications can leverage the form factor and why such support is needed. For reference a couple of demos with screenshots can be found [here](https://github.com/foldable-devices/demos), they take into account the form factor to provide a differentiated UX depending on how the user is using the device.
+
+So how can we support the form factor provided the current landscape?
 
 ## Windows has an Hinge Angle API
 It's true that Windows has an [hinge angle API](https://learn.microsoft.com/en-us/uwp/api/windows.devices.sensors.hingeanglesensor?view=winrt-22621) which could be used to derive the posture of the laptop. However this API is not enough because the hinge angle is not the only data used to compute the posture, for example if the keyboard is docked or not is an important aspect to determine the posture. The status of the kickstand (deployed or not) could also be used to determine the posture.
+
+Obviously the hinge angle API doesn't give us any information in regards to the screen and fold position.
 
 ## Proposal
 Because most foldable computer manufacturers ship some type of software to fill the gap of Windows we can try to work with them to find a way to expose the data that we need to support foldables on the web.
@@ -59,13 +67,13 @@ The Device Posture API doesn't go into so many details but having them defined i
 
 ### API definition
 
-OEMs are required to write in the following location: ```HKEY_CURRENT_USER\Software\Intel\Foled``` .
+OEMs software are required to write in the following location: ```HKEY_CURRENT_USER\Software\Intel\Foled``` .
 
-```PostureData``` will be used as the key to store the posture information. To simplify the data layout for ```PostureData``` will host a JSON data structure containing the various information :
+```PostureData``` will be used as the registry key to store the posture information. To simplify the data layout for ```PostureData``` will host a JSON data structure containing the various information :
 
 * **PostureState** : Hold the posture information with the expected values to be ```MODE_LAPTOP_KB```, ```MODE_LAYFLAT_LANDSCAPE```, ```MODE_DUAL_ANGLE```, ```MODE_TABLETOP```, ```MODE_LAYFLAT_PORTRAIT```, ```MODE_HANDHELD```.
 * **DeviceRotation** : Hold the device rotation for information. Expected values: ```NotRotated```, ```Rotate90Counterclockwise```,  ```Rotate90clockwise```, ```Rotated180DegreesCounterclockwise```. They map the 4 orientations provided by Windows.
-* **Rectangles** : This will contains an array of viewport segments including the fold area.
+* **Rectangles** : This property contains an array of viewport segments including the fold area in physical device pixels. The number of rectangles is flexible but should always be a multiple of 3 (a segment on each side of a fold and the fold area itself). Because the data is flexible it should support more than one fold as well as asymetric folds (where the fold is not in the middle of the screen). The clients of this API are expected to make the necessary adjustments to the data if the scale factor of Windows is different than 100% as well as adapting the data if the content of their application is zoomed.
 
 ### Data examples of the PostureData layout
 
@@ -83,4 +91,3 @@ Using the device in landscape and flat:
 ## Long term
 We hope that this work is temporary, that ultimately Microsoft will propose APIs directly in Windows to address these use cases. In this case this will be deprecated as soon as possible.
 
-.image img { width: 33%; }
