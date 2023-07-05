@@ -29,6 +29,32 @@ Taking insipiration from the SlateMode API we could do the same for our foldable
 
 Here are the typical available postures :
 
+<p align="center">
+  <img src="images/laptop-posture.jpg" width=33% /> 
+<br>
+<ins><i>Laptop Posture</i></ins>
+</p>
+<p align="center">
+  <img src="images/dual-angle-posture.jpg" width=33% /> 
+<br>
+<ins><i>Dual Angle Posture</i></ins>
+</p>
+<p align="center">
+  <img src="images/tabletop-posture.jpg" width=33% /> 
+<br>
+<ins><i>Table Top Posture</i></ins>
+</p>
+<p align="center">
+  <img src="images/flat-posture.png" width=33% /> 
+<br>
+<ins><i>Flat Posture</i></ins>
+</p>
+<p align="center">
+  <img src="images/handheld-posture.jpg" width=33% /> 
+<br>
+<ins><i>Handheld Posture</i></ins>
+</p>
+
 The Device Posture API doesn't go into so many details but having them defined in the lower level is probably a good idea in case it's needed in the future. Rectangles (or segments) are required to populate the Viewport Segments API.
 
 ### API definition
@@ -38,10 +64,10 @@ OEMs are required to write in the following location: ```HKEY_CURRENT_USER\Softw
 ```PostureData``` will be used as the key to store the posture information. To simplify the data layout for ```PostureData``` will host a JSON data structure containing the various information :
 
 * **PostureState** : Hold the posture information with the expected values to be ```MODE_LAPTOP_KB```, ```MODE_LAYFLAT_LANDSCAPE```, ```MODE_DUAL_ANGLE```, ```MODE_TABLETOP```, ```MODE_LAYFLAT_PORTRAIT```, ```MODE_HANDHELD```.
-* **DeviceRotation** : Hold the device rotation for information. Expected values: ```NotRotated```, ```Rotate90Counterclockwise```, ```Rotated180DegreesCounterclockwise```
+* **DeviceRotation** : Hold the device rotation for information. Expected values: ```NotRotated```, ```Rotate90Counterclockwise```,  ```Rotate90clockwise```, ```Rotated180DegreesCounterclockwise```. They map the 4 orientations provided by Windows.
 * **Rectangles** : This will contains an array of viewport segments including the fold area.
 
-### Data examples of the ```PostureData``` layout
+### Data examples of the PostureData layout
 
 Considering the X1 Fold Gen 1 with a panel resolution of 2048px x 1536px and a fold size of 100px, here are few examples :
 
@@ -56,3 +82,5 @@ Using the device in landscape and flat:
 
 ## Long term
 We hope that this work is temporary, that ultimately Microsoft will propose APIs directly in Windows to address these use cases. In this case this will be deprecated as soon as possible.
+
+.image img { width: 33%; }
