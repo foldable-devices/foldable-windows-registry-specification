@@ -85,7 +85,7 @@ In the laptop posture:
 In the dual angle posture:
 ```{"PostureState”:”MODE_DUAL_ANGLE","DeviceRotation":"Rotate90Counterclockwise","Rectangles":["0, 0, 1536, 974”,"0, 974, 1536, 100”, "0, 1074, 1536, 974” ]}```
 
-Using the device in landscape and flat:
+Using the device in the handheld posture:
 ```{"PostureState”:”MODE_DUAL_ANGLE","DeviceRotation”:"NotRotated","Rectangles":["0, 0, 974, 1536”,”974, 0, 100, 1536”, “1074, 0 , 974, 1536” ]}```
 
 ## Long term
