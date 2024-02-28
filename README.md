@@ -67,7 +67,7 @@ The Device Posture API doesn't go into so many details but having them defined i
 
 ### API definition
 
-OEMs software are required to write in the following location: ```HKEY_CURRENT_USER\Software\Intel\Foled``` .
+OEMs software are required to write in the following location: ```HKEY_CURRENT_USER\Software\Intel\Foled``` . If the key/path do not exist OEMs software is required to create it.
 
 ```PostureData``` will be used as the registry key to store the posture information. To simplify the data layout for ```PostureData``` will host a JSON data structure containing the various information :
 
